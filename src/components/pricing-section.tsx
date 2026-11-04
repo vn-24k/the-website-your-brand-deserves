@@ -3,6 +3,9 @@
 import React, { useState } from "react";
 import { Check, Sparkles, ArrowUpRight, Zap, Shield } from "lucide-react";
 import { soundFX } from "./sound-fx";
+import { TiltCard } from "./tilt-card";
+import { ShimmerButton } from "./shimmer-button";
+import { MagneticButton } from "./magnetic-button";
 
 export function PricingSection() {
   const [isAnnual, setIsAnnual] = useState(true);
@@ -68,7 +71,6 @@ export function PricingSection() {
 
   return (
     <section id="pricing" className="relative py-28 bg-[#030303] text-neutral-100 overflow-hidden border-t border-white/[0.08]">
-      {/* Background radial spotlight */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-teal-500/10 rounded-full blur-[160px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
@@ -85,7 +87,6 @@ export function PricingSection() {
             No endless agency retainers or hidden surprise fees. Fixed pricing, rapid turnaround, and full intellectual property ownership.
           </p>
 
-          {/* Monthly / Annual Toggle */}
           <div className="mt-8 inline-flex items-center gap-3 p-1 rounded-full bg-neutral-900 border border-white/[0.08] text-xs">
             <button
               onClick={() => {
@@ -117,87 +118,104 @@ export function PricingSection() {
           </div>
         </div>
 
-        {/* Pricing Cards Grid */}
+        {/* Pricing Cards Grid wrapped in 21st.dev TiltCard */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
           {plans.map(plan => {
             const price = isAnnual ? plan.priceAnnual : plan.priceMonthly;
 
             return (
-              <div
-                key={plan.id}
-                onMouseEnter={() => soundFX.playHover()}
-                className={`relative rounded-3xl p-7 flex flex-col justify-between transition-all duration-300 ${
-                  plan.popular
-                    ? "bg-[#0b0c10] border-2 border-teal-400/60 shadow-[0_0_50px_rgba(45,212,191,0.2)] md:-translate-y-3"
-                    : "bg-[#08080b] border border-white/[0.08] hover:border-white/20 hover:bg-[#0c0d12]"
-                }`}
-              >
-                {/* Border Beam light indicator for popular card */}
-                {plan.popular && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-0.5 rounded-full bg-teal-400 text-neutral-950 text-[10px] font-bold font-mono uppercase tracking-widest shadow-[0_0_15px_rgba(45,212,191,0.6)]">
-                    {plan.badge}
-                  </div>
-                )}
-
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-lg font-semibold text-white tracking-tight">
-                      {plan.name}
-                    </span>
-                    {!plan.popular && (
-                      <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-white/[0.04] text-neutral-400 border border-white/[0.04]">
-                        {plan.badge}
-                      </span>
-                    )}
-                  </div>
-
-                  <p className="text-xs text-neutral-400 min-h-[36px] leading-relaxed">
-                    {plan.desc}
-                  </p>
-
-                  {/* Price */}
-                  <div className="my-6 pb-6 border-b border-white/[0.08] flex items-baseline gap-1.5">
-                    <span className="text-4xl sm:text-5xl font-bold font-mono text-white tracking-tight">
-                      ${price}
-                    </span>
-                    <span className="text-xs text-neutral-400 font-mono">
-                      /month {isAnnual && "(billed annually)"}
-                    </span>
-                  </div>
-
-                  {/* Feature Checkmarks */}
-                  <ul className="space-y-3 mb-8 text-xs text-neutral-300">
-                    {plan.features.map(f => (
-                      <li key={f} className="flex items-start gap-2.5">
-                        <div className="w-4 h-4 rounded-full bg-teal-500/15 text-teal-400 flex items-center justify-center shrink-0 mt-0.5">
-                          <Check className="w-2.5 h-2.5 stroke-[3]" />
-                        </div>
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Card CTA Button */}
-                <button
-                  onClick={() => {
-                    soundFX.playClick();
-                    soundFX.playSuccessChime();
-                    setSelectedPlan(plan.name);
-                    const el = document.getElementById("climax-cta");
-                    el?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  data-cursor="pointer"
-                  className={`w-full py-3 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all duration-300 active:scale-95 ${
+              <TiltCard key={plan.id} maxTilt={8} glareEffect={true} className="h-full">
+                <div
+                  onMouseEnter={() => soundFX.playHover()}
+                  className={`relative rounded-3xl p-7 flex flex-col justify-between h-full transition-all duration-300 ${
                     plan.popular
-                      ? "bg-white hover:bg-neutral-100 text-neutral-950 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]"
-                      : "bg-white/[0.06] hover:bg-white/[0.12] text-white border border-white/10"
+                      ? "bg-[#0b0c10] border-2 border-teal-400/60 shadow-[0_0_50px_rgba(45,212,191,0.2)] md:-translate-y-3"
+                      : "bg-[#08080b] border border-white/[0.08] hover:border-white/20 hover:bg-[#0c0d12]"
                   }`}
                 >
-                  <span>{plan.cta}</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
+                  {plan.popular && (
+                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-0.5 rounded-full bg-teal-400 text-neutral-950 text-[10px] font-bold font-mono uppercase tracking-widest shadow-[0_0_15px_rgba(45,212,191,0.6)]">
+                      {plan.badge}
+                    </div>
+                  )}
+
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-lg font-semibold text-white tracking-tight">
+                        {plan.name}
+                      </span>
+                      {!plan.popular && (
+                        <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-white/[0.04] text-neutral-400 border border-white/[0.04]">
+                          {plan.badge}
+                        </span>
+                      )}
+                    </div>
+
+                    <p className="text-xs text-neutral-400 min-h-[36px] leading-relaxed">
+                      {plan.desc}
+                    </p>
+
+                    <div className="my-6 pb-6 border-b border-white/[0.08] flex items-baseline gap-1.5">
+                      <span className="text-4xl sm:text-5xl font-bold font-mono text-white tracking-tight">
+                        ${price}
+                      </span>
+                      <span className="text-xs text-neutral-400 font-mono">
+                        /month {isAnnual && "(billed annually)"}
+                      </span>
+                    </div>
+
+                    <ul className="space-y-3 mb-8 text-xs text-neutral-300">
+                      {plan.features.map(f => (
+                        <li key={f} className="flex items-start gap-2.5">
+                          <div className="w-4 h-4 rounded-full bg-teal-500/15 text-teal-400 flex items-center justify-center shrink-0 mt-0.5">
+                            <Check className="w-2.5 h-2.5 stroke-[3]" />
+                          </div>
+                          <span>{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {plan.popular ? (
+                    <MagneticButton strength={0.25} className="w-full">
+                      <ShimmerButton
+                        shimmerColor="#2dd4bf"
+                        shimmerDuration="2s"
+                        background="rgba(255, 255, 255, 0.95)"
+                        onClick={() => {
+                          soundFX.playClick();
+                          soundFX.playSuccessChime();
+                          setSelectedPlan(plan.name);
+                          document.getElementById("climax-cta")?.scrollIntoView({ behavior: "smooth" });
+                        }}
+                        data-cursor="pointer"
+                        className="w-full py-3 text-xs font-bold text-neutral-950 shadow-[0_0_25px_rgba(255,255,255,0.4)]"
+                      >
+                        <div className="flex items-center justify-center gap-1.5">
+                          <span>{plan.cta}</span>
+                          <ArrowUpRight className="w-3.5 h-3.5 text-neutral-950" />
+                        </div>
+                      </ShimmerButton>
+                    </MagneticButton>
+                  ) : (
+                    <MagneticButton strength={0.2} className="w-full">
+                      <button
+                        onClick={() => {
+                          soundFX.playClick();
+                          soundFX.playSuccessChime();
+                          setSelectedPlan(plan.name);
+                          document.getElementById("climax-cta")?.scrollIntoView({ behavior: "smooth" });
+                        }}
+                        data-cursor="pointer"
+                        className="w-full py-3 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all duration-300 bg-white/[0.06] hover:bg-white/[0.12] text-white border border-white/10 active:scale-95"
+                      >
+                        <span>{plan.cta}</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </button>
+                    </MagneticButton>
+                  )}
+                </div>
+              </TiltCard>
             );
           })}
         </div>

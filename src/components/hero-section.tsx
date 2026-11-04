@@ -1,10 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { ArrowUpRight, Play, Sparkles, X, CheckCircle, Zap, Shield, Cpu } from "lucide-react";
+import { ArrowUpRight, Play, Sparkles, X, Zap, Shield, Cpu } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { soundFX } from "./sound-fx";
 import { FireflyCanvas } from "./firefly-canvas";
+import { MagneticButton } from "./magnetic-button";
+import { ShimmerButton } from "./shimmer-button";
+import { TiltCard } from "./tilt-card";
 
 interface HeroSectionProps {
   onGetStarted?: () => void;
@@ -86,46 +89,51 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
           This is web design, wildly reimagined.
         </motion.p>
 
-        {/* Dual Call-To-Action Buttons 1:1 */}
+        {/* Dual Call-To-Action using genuine 21st.dev MagneticButton & ShimmerButton */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
           className="mt-9 flex flex-wrap items-center justify-center gap-4"
         >
-          {/* Primary CTA */}
-          <button
-            onClick={() => {
-              soundFX.playClick();
-              if (onGetStarted) onGetStarted();
-              else {
-                document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
-            data-cursor="pointer"
-            onMouseEnter={() => soundFX.playHover()}
-            className="group relative inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs sm:text-sm font-semibold text-white bg-neutral-900/80 backdrop-blur-md border border-white/20 hover:border-teal-400/80 shadow-[0_0_25px_rgba(45,212,191,0.15)] hover:shadow-[0_0_35px_rgba(45,212,191,0.35)] transition-all duration-300 active:scale-95"
-          >
-            {/* Shimmer light sweep */}
-            <span className="absolute inset-0 rounded-full overflow-hidden">
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
-            </span>
-            <span>Get Started</span>
-            <ArrowUpRight className="w-4 h-4 text-teal-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </button>
+          {/* Primary CTA with 21st.dev ShimmerButton */}
+          <MagneticButton strength={0.25}>
+            <ShimmerButton
+              shimmerColor="#2dd4bf"
+              shimmerDuration="2.5s"
+              background="rgba(12, 13, 18, 0.85)"
+              onClick={() => {
+                soundFX.playClick();
+                if (onGetStarted) onGetStarted();
+                else {
+                  document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+              data-cursor="pointer"
+              onMouseEnter={() => soundFX.playHover()}
+              className="px-7 py-3 text-xs sm:text-sm font-semibold text-white shadow-[0_0_30px_rgba(45,212,191,0.25)] border border-white/20"
+            >
+              <div className="flex items-center gap-2">
+                <span>Get Started</span>
+                <ArrowUpRight className="w-4 h-4 text-teal-300" />
+              </div>
+            </ShimmerButton>
+          </MagneticButton>
 
-          {/* Secondary CTA: Watch the Film */}
-          <button
-            onClick={handleOpenFilm}
-            data-cursor="pointer"
-            onMouseEnter={() => soundFX.playHover()}
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-xs sm:text-sm font-medium text-neutral-300 hover:text-white bg-transparent hover:bg-white/[0.05] transition-colors duration-200"
-          >
-            <span>Watch the Film</span>
-            <div className="w-5 h-5 rounded-full bg-white/[0.1] flex items-center justify-center">
-              <Play className="w-2.5 h-2.5 fill-current text-white translate-x-[1px]" />
-            </div>
-          </button>
+          {/* Secondary CTA: Watch the Film with Magnetic attraction */}
+          <MagneticButton strength={0.2}>
+            <button
+              onClick={handleOpenFilm}
+              data-cursor="pointer"
+              onMouseEnter={() => soundFX.playHover()}
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-xs sm:text-sm font-medium text-neutral-300 hover:text-white bg-transparent hover:bg-white/[0.05] transition-colors duration-200"
+            >
+              <span>Watch the Film</span>
+              <div className="w-5 h-5 rounded-full bg-white/[0.1] flex items-center justify-center">
+                <Play className="w-2.5 h-2.5 fill-current text-white translate-x-[1px]" />
+              </div>
+            </button>
+          </MagneticButton>
         </motion.div>
       </div>
 
@@ -139,7 +147,6 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="relative w-full max-w-3xl bg-[#0d0d11] border border-white/[0.12] rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-8"
             >
-              {/* Close Button */}
               <button
                 onClick={handleCloseFilm}
                 data-cursor="pointer"
@@ -162,37 +169,37 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
                 procedural Web Audio soundscapes, and mathematical 1:1 design fidelity.
               </p>
 
-              {/* Mockup Video Frame */}
-              <div className="relative aspect-video rounded-2xl overflow-hidden bg-neutral-950 border border-white/[0.08] flex flex-col items-center justify-center group">
-                <img
-                  src="/hero-botanical-bg.jpg"
-                  alt="Showreel Preview"
-                  className="w-full h-full object-cover opacity-60"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-                <div className="absolute flex flex-col items-center gap-3">
-                  <div className="w-16 h-16 rounded-full bg-teal-500/20 border border-teal-400/50 flex items-center justify-center backdrop-blur-md shadow-[0_0_30px_rgba(45,212,191,0.5)] group-hover:scale-110 transition-transform">
-                    <Play className="w-7 h-7 text-white fill-white translate-x-0.5" />
+              <TiltCard maxTilt={8} className="w-full">
+                <div className="relative aspect-video rounded-2xl overflow-hidden bg-neutral-950 border border-white/[0.08] flex flex-col items-center justify-center group">
+                  <img
+                    src="/hero-botanical-bg.jpg"
+                    alt="Showreel Preview"
+                    className="w-full h-full object-cover opacity-60"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                  <div className="absolute flex flex-col items-center gap-3">
+                    <div className="w-16 h-16 rounded-full bg-teal-500/20 border border-teal-400/50 flex items-center justify-center backdrop-blur-md shadow-[0_0_30px_rgba(45,212,191,0.5)] group-hover:scale-110 transition-transform">
+                      <Play className="w-7 h-7 text-white fill-white translate-x-0.5" />
+                    </div>
+                    <span className="text-xs font-mono text-neutral-300 bg-black/60 px-3 py-1 rounded-full border border-white/10">
+                      Duration: 02:40 • Dolby Audio Active
+                    </span>
                   </div>
-                  <span className="text-xs font-mono text-neutral-300 bg-black/60 px-3 py-1 rounded-full border border-white/10">
-                    Duration: 02:40 • Dolby Audio Active
-                  </span>
                 </div>
-              </div>
+              </TiltCard>
 
-              {/* Three Pillars in Modal */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6 pt-5 border-t border-white/[0.08]">
                 <div className="flex items-start gap-2.5 text-xs text-neutral-300">
                   <Zap className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
                   <div>
                     <strong className="block text-white font-medium">120 FPS Motion</strong>
-                    <span>Zero layout jank via hardware-accelerated transforms</span>
+                    <span>Zero layout jank via hardware transforms</span>
                   </div>
                 </div>
                 <div className="flex items-start gap-2.5 text-xs text-neutral-300">
                   <Cpu className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-white font-medium">Autonomous Intelligence</strong>
+                    <strong className="block text-white font-medium">Autonomous Engine</strong>
                     <span>Trained on 42 award-winning repositories</span>
                   </div>
                 </div>
@@ -200,7 +207,7 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
                   <Shield className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
                   <div>
                     <strong className="block text-white font-medium">Production Hardened</strong>
-                    <span>TypeScript Strict, Zod schema validation & Vercel Edge</span>
+                    <span>Strict TypeScript & Vercel Edge hydration</span>
                   </div>
                 </div>
               </div>
